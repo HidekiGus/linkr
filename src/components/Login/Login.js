@@ -1,5 +1,23 @@
 import styled from "styled-components";
+import { useState } from "react";
+import axios from "axios";
+import { Link ,useNavigate } from "react-router-dom";
 export default function Login(){
+    const navigate = useNavigate();
+    const [email,setEmail]=useState('')
+    const [senha,setSenha]=useState('')
+    const [token,setToken]=useState('')
+    async function login(){
+        try{
+            const resposta=await axios.post('localhost:5000/login',{
+                 email,senha
+            })
+            setToken(resposta.data)
+            navigate("/pg1")    
+       }catch{
+            alert('deu ruim meu amigo __-')
+       }
+    }
     return(
         
         <Container>
@@ -11,13 +29,13 @@ export default function Login(){
             <BoxLogin>
             <form >
              <Box>
-             <Input type={'text'}  placeholder='e-mail'></Input>
+             <Input type={'text'} value={email}  onChange={(e) => setEmail(e.target.value)} placeholder='e-mail'></Input>
              </Box>
              <Box>
-             <Input type={'text'}  placeholder='password'></Input>
+             <Input type={'text'}  placeholder='password'  value={senha} onChange={(e) => setSenha(e.target.value)}></Input>
              </Box>
              <Box>
-             <Button >LOG in</Button>
+             <Button  onClick={login}>Login</Button>
              </Box>
           
              </form>
@@ -54,6 +72,7 @@ const Input = styled.input`
 `;
 const Box = styled.div`
     margin-left:30px;
+    margin-bottom:5px
     
 `;
 const Button = styled.button`
