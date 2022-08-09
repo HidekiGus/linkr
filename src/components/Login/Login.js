@@ -3,6 +3,11 @@ export default function Login(){
     return(
         
         <Container>
+            <Text>
+                <H1>Linkr </H1>
+                <P>save, share and discover</P>
+                <P>the best links on the web</P>
+            </Text>
             <BoxLogin>
             <form >
              <Box>
@@ -57,3 +62,23 @@ const Button = styled.button`
     background-color:#1877f2;
     border-radius:5px;
 `;
+const Text = styled.div`
+ 
+   width:400px;
+   height:400px;
+   position: absolute;
+	left: 20vw;
+	top: 28vh;
+    
+`;  
+const H1 = styled.h1`
+  font-size:100px;
+  color:white;
+    
+`;  
+const P = styled.p`
+  font-size:25px;
+  color:white;
+    
+`; 
+   
