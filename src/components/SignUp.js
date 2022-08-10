@@ -1,8 +1,11 @@
+import axios from "axios";
 import { useState } from "react";
-import { Link } from "react-router-dom"
-import styled from "styled-components"
+import { Link, useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import reqRoot from './reqRoot.js';
 
 export default function SignUp() {
+    const navigate = useNavigate();
     const [user, setUser] = useState({email: "", password: "", name: "", image: ""});
 
     function checkFields(event) {
@@ -20,8 +23,16 @@ export default function SignUp() {
         sendNewUser();
     }
 
-    function sendNewUser(event) {
-        console.log('oi')
+    async function sendNewUser(event) {
+        try {
+            await axios.post('http://localhost:4000/signup', user);
+            navigate('/')
+        } catch (error) {
+            if(error.response.status === 409) {
+                return alert('E-mail já cadastrado!')
+            }
+            console.log(error)
+        }
     }
 
     return (
