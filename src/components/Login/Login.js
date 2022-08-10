@@ -45,6 +45,9 @@ export default function Login(){
              <Box>
              <Button  onClick={login}>Login</Button>
              </Box>
+             <Box1>
+                <P1 onClick={()=>navigate("/sign-up")  }> First time? Create an account!</P1>
+             </Box1>
           
              </form>
             </BoxLogin>
@@ -83,6 +86,17 @@ const Box = styled.div`
     margin-bottom:5px
     
 `;
+const Box1 = styled.div`
+    margin-left:30px;
+    margin-bottom:5px;
+    width: 300px;
+    height: 35px;
+   
+   
+ 
+   
+    
+`;
 const Button = styled.button`
      width: 300px;
     height: 35px;
@@ -105,6 +119,12 @@ const H1 = styled.h1`
 `;  
 const P = styled.p`
   font-size:25px;
+  color:white;
+    
+`; 
+const P1 = styled.p`
+  font-size:15px;
+  margin-left:55px;
   color:white;
     
 `; 
