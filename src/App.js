@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from 'react';
 
 import Login from "./components/Login/Login.js"
+import SignUp from "./components/SignUp.js";
 
 
 export default  function App() {
@@ -14,7 +15,7 @@ return (
     <Routes>
       <Route path="/" element={<Login/>} />
       <Route path="/login" element={<Login/>} />
-
+      <Route path="/signup" element={<SignUp />} />
     </Routes>
     </BrowserRouter>
   </div>
