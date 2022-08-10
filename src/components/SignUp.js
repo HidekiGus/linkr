@@ -15,7 +15,7 @@ export default function SignUp() {
 
         if(!user.email || !user.password || !user.name) {
             setDisable(false)
-            return alert('Para prosseguir é necessário preencher corretamente o e-mail, password e username')
+            return alert(`Para prosseguir é necessário preencher\n${user.email ? '' : ' e-mail.'}${user.password ? '' : ' password.'}${user.name ? '' : ' username.'}`)
         }
 
         if(!user.image) {
@@ -24,12 +24,12 @@ export default function SignUp() {
                 return
             }
         }
-        setTimeout(sendNewUser, 3000)
+        sendNewUser()
     }
 
     async function sendNewUser() {
         try {
-            await axios.post('http://localhost:4000/signup', user);
+            await axios.post(`${reqRoot}signup`, user);
             navigate('/')
         } catch (error) {
             setDisable(false)
@@ -51,9 +51,9 @@ export default function SignUp() {
             </Brand>
             <Form>
                 <form onSubmit={checkFields}>
-                    <input required placeholder="e-mail" type="email" value={user.email} onChange={e => setUser({...user, email: e.target.value})} />
-                    <input required placeholder="password" type="password" value={user.password} onChange={e => setUser({...user, password: e.target.value})} />
-                    <input required placeholder="username" value={user.name} onChange={e => setUser({...user, name: e.target.value})} />
+                    <input placeholder="e-mail" type="email" value={user.email} onChange={e => setUser({...user, email: e.target.value})} />
+                    <input placeholder="password" type="password" value={user.password} onChange={e => setUser({...user, password: e.target.value})} />
+                    <input placeholder="username" value={user.name} onChange={e => setUser({...user, name: e.target.value})} />
                     <input placeholder="picture url" value={user.image} onChange={e => setUser({...user, image: e.target.value})} />
                     <Button disabled={disable} typeof="submit">Sign Up</Button>
                 </form>
@@ -121,10 +121,6 @@ const Form = styled.div`
         margin-bottom: 15px;
     }
 
-    button:hover {
-        cursor: pointer;
-    }
-
     p {
         color: #FFFFFF;
         font-size: 20px;
@@ -133,4 +129,8 @@ const Form = styled.div`
 `
 const Button = styled.button`
     opacity: ${props => props.disabled ? 0.3 : 1};
+
+&:hover {
+    cursor: ${props => props.disabled ? 'default' : 'pointer'};
+}
 `
