@@ -9,6 +9,10 @@ export default function Login(){
     const [senha,setSenha]=useState('')
     const [token,setToken]=useState('')
     async function login(e){
+        if(email=='' ||senha ==''){
+            alert('preencha todos os campos')
+            return
+        }
         e.preventDefault();
         try{
             const resposta=await axios.post('http://localhost:5000/signin',{
