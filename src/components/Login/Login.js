@@ -22,8 +22,8 @@ export default function Login(){
             //navigate("/pg1")    
        }catch(e){
         console.log(e)
-            alert(e)
-            alert('deu ruim meu amigo __-')
+            alert(e.response.data)
+          
        }
     }
     return(
