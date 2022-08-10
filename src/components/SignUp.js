@@ -69,9 +69,21 @@ const Container = styled.div`
     display: flex;
     min-height: 100vh;
     background-color: #333333;
+    font-weight: 700;
 
     h1 {
         font-size: 106px;
+        margin-bottom: 30px;
+    }
+
+    @media(max-width: 800px) {
+        flex-direction: column;
+        text-align: center;
+
+        h1 {
+            font-size: 76px;
+            margin-bottom: 15px;
+        }
     }
 `
 const Brand = styled.div`
@@ -82,10 +94,19 @@ const Brand = styled.div`
     background-color: #151515;
     color: #ffffff;
     width: 100%;
-    box-shadow: 4px 0px 4px rgba(0, 0, 0, 0.25);
+    box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
+    padding: 15px;
 
     p {
         font-size: 43px;
+        margin-bottom: 15px;
+    }
+
+    @media(max-width: 800px) {
+        p {
+            font-size: 23px;
+            margin-bottom: 7px;
+        }
     }
 `
 const Form = styled.div`
@@ -109,6 +130,7 @@ const Form = styled.div`
         border-radius: 6px;
         margin-bottom: 13px;
         padding-left: 17px;
+        font-weight: 700;
     }
 
     button {
@@ -119,12 +141,31 @@ const Form = styled.div`
         border: none;
         border-radius: 6px;
         margin-bottom: 15px;
+        font-weight: 700;
     }
 
     p {
         color: #FFFFFF;
         font-size: 20px;
         text-decoration: underline;
+        font-weight: 400;
+    }
+
+    @media(max-width: 800px) {
+        padding: 50px 23px 0px 23px;
+
+        form {
+            width: 100%;
+        }
+
+        input, button {
+            font-size: 22px;
+            height: 55px;
+        }
+
+        p {
+            font-size: 17px;
+        }
     }
 `
 const Button = styled.button`
