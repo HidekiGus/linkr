@@ -1,6 +1,29 @@
+import { useState } from "react";
+import { Link } from "react-router-dom"
 import styled from "styled-components"
 
 export default function SignUp() {
+    const [user, setUser] = useState({email: "", password: "", name: "", image: ""});
+
+    function checkFields(event) {
+        event.preventDefault();
+
+        if(!user.email || !user.password || !user.name) {
+            return alert('Para prosseguir é necessário preencher corretamente o e-mail, password e username')
+        }
+
+        if(!user.image) {
+            if(!window.confirm('Tem certeza que quer continuar sem imagem?\n\nLembre-se,\nnão será possível mudar isso posteriormente!')) {
+                return
+            }
+        }
+        sendNewUser();
+    }
+
+    function sendNewUser(event) {
+        console.log('oi')
+    }
+
     return (
         <Container>
             <Brand>
@@ -11,14 +34,16 @@ export default function SignUp() {
                 </div>
             </Brand>
             <Form>
-                <form>
-                    <input placeholder="e-mail" />
-                    <input placeholder="password" />
-                    <input placeholder="username" />
-                    <input placeholder="picture url" />
-                    <button>Sign Up</button>
+                <form onSubmit={checkFields}>
+                    <input required placeholder="e-mail" type="email" value={user.email} onChange={e => setUser({...user, email: e.target.value})} />
+                    <input required placeholder="password" type="password" value={user.password} onChange={e => setUser({...user, password: e.target.value})} />
+                    <input required placeholder="username" value={user.name} onChange={e => setUser({...user, name: e.target.value})} />
+                    <input placeholder="picture url" value={user.image} onChange={e => setUser({...user, image: e.target.value})} />
+                    <button typeof="submit">Sign Up</button>
                 </form>
-                <p>Switch back to log in</p>
+                <Link to="/">
+                    <p>Switch back to log in</p>
+                </Link>
             </Form>
         </Container>
     )
@@ -83,6 +108,7 @@ const Form = styled.div`
     }
 
     p {
+        color: #FFFFFF;
         font-size: 20px;
         text-decoration: underline;
     }
