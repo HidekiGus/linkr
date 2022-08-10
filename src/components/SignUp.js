@@ -7,27 +7,32 @@ import reqRoot from './reqRoot.js';
 export default function SignUp() {
     const navigate = useNavigate();
     const [user, setUser] = useState({email: "", password: "", name: "", image: ""});
+    const [disable, setDisable] = useState(false);
 
     function checkFields(event) {
         event.preventDefault();
+        setDisable(true)
 
         if(!user.email || !user.password || !user.name) {
+            setDisable(false)
             return alert('Para prosseguir é necessário preencher corretamente o e-mail, password e username')
         }
 
         if(!user.image) {
             if(!window.confirm('Tem certeza que quer continuar sem imagem?\n\nLembre-se,\nnão será possível mudar isso posteriormente!')) {
+                setDisable(false)
                 return
             }
         }
-        sendNewUser();
+        setTimeout(sendNewUser, 3000)
     }
 
-    async function sendNewUser(event) {
+    async function sendNewUser() {
         try {
             await axios.post('http://localhost:4000/signup', user);
             navigate('/')
         } catch (error) {
+            setDisable(false)
             if(error.response.status === 409) {
                 return alert('E-mail já cadastrado!')
             }
@@ -50,7 +55,7 @@ export default function SignUp() {
                     <input required placeholder="password" type="password" value={user.password} onChange={e => setUser({...user, password: e.target.value})} />
                     <input required placeholder="username" value={user.name} onChange={e => setUser({...user, name: e.target.value})} />
                     <input placeholder="picture url" value={user.image} onChange={e => setUser({...user, image: e.target.value})} />
-                    <button typeof="submit">Sign Up</button>
+                    <Button disabled={disable} typeof="submit">Sign Up</Button>
                 </form>
                 <Link to="/">
                     <p>Switch back to log in</p>
@@ -69,7 +74,6 @@ const Container = styled.div`
         font-size: 106px;
     }
 `
-
 const Brand = styled.div`
     display: flex;
     flex-direction: column;
@@ -84,7 +88,6 @@ const Brand = styled.div`
         font-size: 43px;
     }
 `
-
 const Form = styled.div`
     display: flex;
     flex-direction: column;
@@ -118,9 +121,16 @@ const Form = styled.div`
         margin-bottom: 15px;
     }
 
+    button:hover {
+        cursor: pointer;
+    }
+
     p {
         color: #FFFFFF;
         font-size: 20px;
         text-decoration: underline;
     }
+`
+const Button = styled.button`
+    opacity: ${props => props.disabled ? 0.3 : 1};
 `
