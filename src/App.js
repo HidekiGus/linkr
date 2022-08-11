@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from 'react';
 
 import Login from "./components/Login/Login.js"
-import Header from "./components/Header/Header.js";
+import SignUp from "./components/SignUp.js";
 
 
 export default  function App() {
@@ -13,11 +13,10 @@ export default  function App() {
     <div >
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/" element={<Login/>} />
+          <Route path="/signup" element={<SignUp />} />
         </Routes>
       </BrowserRouter>
     </div>
-
   )
 }

@@ -1,21 +1,29 @@
 import styled from "styled-components";
 import { useState } from "react";
 import axios from "axios";
+
 import { Link ,useNavigate } from "react-router-dom";
 export default function Login(){
     const navigate = useNavigate();
     const [email,setEmail]=useState('')
     const [senha,setSenha]=useState('')
     const [token,setToken]=useState('')
-    async function login(){
+    async function login(e){
+        if(email=='' ||senha ==''){
+            alert('preencha todos os campos')
+            return
+        }
+        e.preventDefault();
         try{
-            const resposta=await axios.post('localhost:5000/login',{
-                 email,senha
+            const resposta=await axios.post('http://localhost:5000/signin',{
+                 email:email, password:senha
             })
             setToken(resposta.data)
-            navigate("/pg1")    
-       }catch{
-            alert('deu ruim meu amigo __-')
+            //navigate("/pg1")    
+       }catch(e){
+        console.log(e)
+            alert(e.response.data)
+          
        }
     }
     return(
@@ -37,6 +45,9 @@ export default function Login(){
              <Box>
              <Button  onClick={login}>Login</Button>
              </Box>
+             <Box1>
+                <P1 onClick={()=>navigate("/sign-up")  }> First time? Create an account!</P1>
+             </Box1>
           
              </form>
             </BoxLogin>
@@ -75,6 +86,17 @@ const Box = styled.div`
     margin-bottom:5px
     
 `;
+const Box1 = styled.div`
+    margin-left:30px;
+    margin-bottom:5px;
+    width: 300px;
+    height: 35px;
+   
+   
+ 
+   
+    
+`;
 const Button = styled.button`
      width: 300px;
     height: 35px;
@@ -97,6 +119,12 @@ const H1 = styled.h1`
 `;  
 const P = styled.p`
   font-size:25px;
+  color:white;
+    
+`; 
+const P1 = styled.p`
+  font-size:15px;
+  margin-left:55px;
   color:white;
     
 `; 
