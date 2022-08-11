@@ -3,21 +3,21 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from 'react';
 
 import Login from "./components/Login/Login.js"
+import Header from "./components/Header/Header.js";
 
 
 export default  function App() {
 
 
-return (
+  return (
     <div >
-    <BrowserRouter>
-    <Routes>
-      <Route path="/" element={<Login/>} />
-      <Route path="/login" element={<Login/>} />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/login" element={<Login />} />
+        </Routes>
+      </BrowserRouter>
+    </div>
 
-    </Routes>
-    </BrowserRouter>
-  </div>
- 
-)
+  )
 }
