@@ -3,7 +3,7 @@ import { useState } from "react";
 import axios from "axios";
 
 import { Link ,useNavigate } from "react-router-dom";
-export default function Login(){
+export default function Login(e){
     const navigate = useNavigate();
     const [email,setEmail]=useState('')
     const [senha,setSenha]=useState('')
@@ -22,7 +22,11 @@ export default function Login(){
             //navigate("/pg1")    
        }catch(e){
         console.log(e)
-            alert(e.response.data)
+            if(e.response.data ==undefined){
+            alert('servidor off')
+            }else{
+                alert(e.response.data)
+            }
           
        }
     }
@@ -46,7 +50,7 @@ export default function Login(){
              <Button  onClick={login}>Login</Button>
              </Box>
              <Box1>
-                <P1 onClick={()=>navigate("/sign-up")  }> First time? Create an account!</P1>
+                <P1 onClick={()=>navigate("/signup")  }> First time? Create an account!</P1>
              </Box1>
           
              </form>
@@ -109,7 +113,7 @@ const Text = styled.div`
    height:400px;
    position: absolute;
 	left: 20vw;
-	top: 28vh;
+	top: 40vh;
     
 `;  
 const H1 = styled.h1`
