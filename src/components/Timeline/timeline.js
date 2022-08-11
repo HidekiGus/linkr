@@ -20,7 +20,7 @@ export default function Timeline(){
                 pesq
             })
             setRes(resposta.data)
-            alert(resposta.data[0].name)
+           
             //navigate("/pg1")    
        }catch(e){
         console.log(e)
