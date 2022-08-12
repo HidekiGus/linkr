@@ -1,13 +1,17 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import axios from "axios";
 
-import { Link ,useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import reqRoot from "../../service/reqRoot.js";
+import TokenContext from "../../contexts/TokenContext.js";
+
 export default function Login(e){
     const navigate = useNavigate();
     const [email,setEmail]=useState('')
     const [senha,setSenha]=useState('')
-    const [token,setToken]=useState('')
+    const {setToken} = useContext(TokenContext);
+
     async function login(e){
         if(email=='' ||senha ==''){
             alert('preencha todos os campos')
@@ -15,7 +19,7 @@ export default function Login(e){
         }
         e.preventDefault();
         try{
-            const resposta=await axios.post('http://localhost:5000/signin',{
+            const resposta=await axios.post(`${reqRoot}signin`,{
                  email:email, password:senha
             })
             setToken(resposta.data)
