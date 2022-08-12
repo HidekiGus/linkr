@@ -7,7 +7,6 @@ import SignUp from "./components/SignUp.js";
 import "./components/Timeline/teste.css";
 // import UserContext from './contexts/UserContext.js';
 
-
 export default  function App() {
   const [user, setUser] = useState({
     id: "",
