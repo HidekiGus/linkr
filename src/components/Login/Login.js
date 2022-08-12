@@ -22,7 +22,7 @@ export default function Login(e){
             const resposta=await axios.post(`${reqRoot}signin`,{
                  email:email, password:senha
             })
-            setToken(resposta.data)
+            setToken({token: resposta.data})
             //navigate("/pg1")    
        }catch(e){
         console.log(e)
