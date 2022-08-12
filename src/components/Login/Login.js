@@ -1,16 +1,18 @@
 import styled from "styled-components";
-import { useState, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 
 import UserContext from "../../contexts/UserContext";
+import reqRoot from "../../utils/reqRoot";
+import generateHeader from "../../utils/TokenHeaders";
 
 export default function Login() {
     const navigate = useNavigate();
     const [email, setEmail] = useState('')
     const [senha, setSenha] = useState('')
     const [token, setToken] = useState('')
-    // const { setUser } = useContext(UserContext);
+    const { user, setUser } = useContext(UserContext);
     async function login(e) {
         if (email == '' || senha == '') {
             alert('preencha todos os campos')
@@ -18,18 +20,17 @@ export default function Login() {
         }
         e.preventDefault();
         try {
-            const resposta = await axios.post('http://localhost:5000/signin', {
+            const resposta = await axios.post(`${reqRoot}/signin`, {
                 email: email, password: senha
             })
             setToken(resposta.data)
-            //navigate("/pg1")    
-        } catch (e) {
-            console.log(e)
-            alert(e.response.data)
-
+            navigate("/timeline")    
+        } catch (err) {
+            console.log(err)
+            alert(err.response.data)
         }
     }
-    /* async function createNewSession() {
+    async function createNewSession() {
         const token = localStorage.getItem("linkr-localUser");
         if (token) {
             try {
@@ -49,7 +50,7 @@ export default function Login() {
     
     useEffect(() => {
         createNewSession()
-    }) */
+    })
     return (
 
         <Container>

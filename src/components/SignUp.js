@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import reqRoot from '../reqRoot.js';
+import reqRoot from '../utils/reqRoot.js';
 
 export default function SignUp() {
     const navigate = useNavigate();
