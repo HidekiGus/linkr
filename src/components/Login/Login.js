@@ -2,12 +2,11 @@ import styled from "styled-components";
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-
 import UserContext from "../../contexts/UserContext";
 import reqRoot from "../../utils/reqRoot";
 import generateHeader from "../../utils/TokenHeaders";
 
-export default function Login() {
+export default function Login(e){
     const navigate = useNavigate();
     const [email, setEmail] = useState('')
     const [senha, setSenha] = useState('')
@@ -27,7 +26,11 @@ export default function Login() {
             navigate("/timeline")    
         } catch (err) {
             console.log(err)
+            if (err.response.data === undefined) {
+            alert('servidor off') 
+            } else {
             alert(err.response.data)
+            }
         }
     }
     async function createNewSession() {
@@ -134,7 +137,7 @@ const Text = styled.div`
    height:400px;
    position: absolute;
 	left: 20vw;
-	top: 28vh;
+	top: 40vh;
     
 `;
 const H1 = styled.h1`
