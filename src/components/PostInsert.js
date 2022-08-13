@@ -4,10 +4,11 @@ import styled from "styled-components"
 import TokenContext from "../contexts/TokenContext.js";
 import reqRoot from "../service/reqRoot";
 
-export default function Post(img) {
+export default function PostInsert(img) {
     const {token} = useContext(TokenContext);
     const [post, setPost] = useState({link: "", description: ""});
     const [disable, setDisable] = useState(false);
+    const [hashtags, setHashtags] = useState([]);
 
     function checkPost(event) {
         event.preventDefault();
@@ -17,13 +18,28 @@ export default function Post(img) {
             setDisable(false);
             return alert('É necessário preencher o link.')
         }
+        getHashtags();
+    }
+
+    function getHashtags() {
+        const segregate = post.description.split(" ");
+
+        for(let i = 0; i < segregate.length; i++) {
+            if(segregate[i].startsWith("#")) {
+                hashtags.push(segregate[i])
+            }
+        }
         sendPost();
     }
 
     async function sendPost() {
         try {
-            await axios.post(`${reqRoot}post`, {...post, user_id: token.userId});
-
+            await axios.post(`${reqRoot}post`, {...post, userId: 1}, token);
+            await axios.post(`${reqRoot}hashtag`, {hashtags: hashtags}, token);
+            
+            setDisable(false);
+            setHashtags([]);
+            setPost({link: "", description: ""});
         } catch (error) {
             setDisable(false)
             alert('Houve um erro ao publicar seu link')

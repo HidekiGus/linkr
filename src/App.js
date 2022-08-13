@@ -4,7 +4,6 @@ import Timeline from "./components/Timeline/timeline.js";
 import Login from "./components/Login/Login.js";
 import SignUp from "./pages/SignUp.js";
 import "./components/Timeline/teste.css";
-import Post from "./components/Post.js";
 import TokenContext from "./contexts/TokenContext.js";
 // import UserContext from './contexts/UserContext.js';
 
@@ -28,7 +27,6 @@ export default  function App() {
         <Route path="/" element={<Login/>} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/timeline" element={<Timeline  />} />
-        <Route path="/post" element={<Post />} />
       </Routes>
     </TokenContext.Provider>
     {/* </UserContext.Provider> */}
