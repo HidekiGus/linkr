@@ -4,10 +4,11 @@ import { useNavigate } from "react-router-dom";
 
 import { BiSearchAlt } from 'react-icons/bi';
 import { IoIosArrowUp } from 'react-icons/io';
-import { IoIosArrowDown } from 'react-icons/io';
+import UserContext from "../../contexts/UserContext";
 
 export default function Header() {
     const [hidden, setHidden] = useState(true);
+    const { user } = useContext(UserContext);
 
     function toggleHidden() {
         if (hidden) {
@@ -28,7 +29,7 @@ export default function Header() {
             </SearchBar>
             <Menu>
                 <ToggleIcon onClick={toggleHidden} hidden={hidden ? "0deg" : "180deg"} />
-                <ProfileImage alt="foto de perfil" src="https://i.ytimg.com/vi/RTFJsGtJEtY/maxresdefault.jpg" />
+                <ProfileImage alt="foto de perfil" src={user.image} />
                 <ToggleMenu display={hidden ? "none" : "flex"} />
             </Menu>
         </Container>

@@ -3,9 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from 'react';
 import Timeline from "./components/Timeline/timeline.js";
 import Login from "./components/Login/Login.js";
-import SignUp from "./components/SignUp.js";
+import SignUp from "./components/SignUp/SignUp.js";
 import "./components/Timeline/teste.css";
-// import UserContext from './contexts/UserContext.js';
+import UserContext from './contexts/UserContext.js';
 
 export default  function App() {
   const [user, setUser] = useState({
@@ -19,13 +19,13 @@ export default  function App() {
   return (
     <div >
     <BrowserRouter>
-    {/* <UserContext.Provider value={{ user, setUser }}> */}
+    <UserContext.Provider value={{ user, setUser }}>
     <Routes>
       <Route path="/" element={<Login/>} />
       <Route path="/signup" element={<SignUp />} />
       <Route path="/timeline" element={<Timeline />} />
     </Routes>
-    {/* </UserContext.Provider> */}
+    </UserContext.Provider>
     </BrowserRouter>
   </div>
 )
