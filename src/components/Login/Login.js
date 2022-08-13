@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useState } from "react";
 import axios from "axios";
+import ReactTooltip from 'react-tooltip';
 
 import { Link ,useNavigate } from "react-router-dom";
 export default function Login(e){
@@ -8,6 +9,7 @@ export default function Login(e){
     const [email,setEmail]=useState('')
     const [senha,setSenha]=useState('')
     const [token,setToken]=useState('')
+    const [disable, setDisable] = useState(false);
     async function login(e){
         if(email=='' ||senha ==''){
             alert('preencha todos os campos')
@@ -15,17 +17,20 @@ export default function Login(e){
         }
         e.preventDefault();
         try{
-            const resposta=await axios.post('http://localhost:5000/signin',{
+            const resposta=await axios.post('http://localhost:4000/signin',{
                  email:email, password:senha
             })
             setToken(resposta.data)
-            //navigate("/pg1")    
+            console.log(resposta.data)
+            navigate("/timeline")    
        }catch(e){
         console.log(e)
             if(e.response.data ==undefined){
             alert('servidor off')
+            setDisable(false)
             }else{
                 alert(e.response.data)
+                setDisable(false)
             }
           
        }
@@ -34,12 +39,12 @@ export default function Login(e){
         
         <Container>
             <Text>
-                <H1>Linkr </H1>
-                <P>save, share and discover</P>
+                <H1 data-tip="hello world">Linkr </H1>
+                <P >save, share and discover</P>
                 <P>the best links on the web</P>
             </Text>
             <BoxLogin>
-            <form >
+            <form onSubmit={login}>
              <Box>
              <Input type={'text'} value={email}  onChange={(e) => setEmail(e.target.value)} placeholder='e-mail'></Input>
              </Box>
@@ -47,7 +52,7 @@ export default function Login(e){
              <Input type={'text'}  placeholder='password'  value={senha} onChange={(e) => setSenha(e.target.value)}></Input>
              </Box>
              <Box>
-             <Button  onClick={login}>Login</Button>
+             <Button  disabled={disable} >Login</Button>
              </Box>
              <Box1>
                 <P1 onClick={()=>navigate("/signup")  }> First time? Create an account!</P1>

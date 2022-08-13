@@ -1,12 +1,16 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useEffect  } from "react";
 import axios from "axios";
 import Div from "./Div.js";
+import hashtag from "./Hashtag";
 import { Link ,useNavigate } from "react-router-dom";
+import ReactTooltip from 'react-tooltip';
 export default function Timeline(){
+    const texto =`teste ${10}`
     const [pesq,setPesq]=useState('')
     const [chave,setChave]=useState('teste')
     const [res,setRes]=useState([])
+    const [get,getRes]=useState([])
     const caixa=['t','e','s','t','e']
     async function pesquisa(){
         if(pesq.length <3){
@@ -16,7 +20,7 @@ export default function Timeline(){
         setChave('teste1')
      
         try{
-            const resposta=await axios.get(`http://localhost:5000/timeline/?nome=${pesq}`,{
+            const resposta=await axios.get(`http://localhost:4000/timeline/?nome=${pesq}`,{
                 pesq
             })
             setRes(resposta.data)
@@ -33,6 +37,20 @@ export default function Timeline(){
        }
     
     }
+    useEffect(() => {
+        async function getpg1(){
+         try{
+            const promessa=await axios.get('http://localhost:4000/hashtagsTrending')      
+            getRes(promessa.data)
+            console.log(promessa.data)
+           
+         }catch(e){
+            console.log('ruim no getpg1')
+         }
+        }
+         getpg1()
+        
+         }, []);
     return(
         
         <Container>
@@ -53,7 +71,23 @@ export default function Timeline(){
             })}
                 </div>
             </Barra>
-           
+            <button  data-tip = {texto} >Curtidas</button>
+            <Linkr>
+                <LinkrTitulo>
+                <p>trending</p>
+                </LinkrTitulo> 
+                <Linha></Linha>
+                <P>
+                {get.map((ns)=>{
+            return(
+                <>
+                   <Div nome={ns.nome} > </Div>
+                </>
+                )
+            })}
+            </P>
+            </Linkr>
+            < ReactTooltip  / >
         </Container>
         
     )
@@ -64,6 +98,30 @@ const Container = styled.div`
     background-color:#333333;
     position: relative;
   
+`;
+const Linkr = styled.div`
+    width: 20vw;
+    height: 250px;
+    background-color:#151515;
+    border-radius:10px;
+    position: fixed;
+	top: 155px;
+	right: 0px;
+`;
+const P = styled.p`
+   color:white;
+`;
+const LinkrTitulo = styled.div`
+    width: 20vw;
+    height: 40px;
+    font-size:30px;
+    border-radius:10px;
+    color:white;
+`;
+const Linha= styled.div`
+    height: 2px;
+    background-color:#333333;
+    margin-bottom:10px;
 `;
 const Teste = styled.div`
     width: 20vw;
