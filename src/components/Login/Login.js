@@ -1,28 +1,33 @@
 import styled from "styled-components";
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
-import UserContext from "../../contexts/UserContext";
-import reqRoot from "../../utils/reqRoot";
-import generateHeader from "../../utils/TokenHeaders";
+import { useNavigate } from "react-router-dom";
+import reqRoot from "../../service/reqRoot.js";
+import TokenContext from "../../contexts/TokenContext.js";
+// import generateHeader from "../../utils/TokenHeaders";
 
 export default function Login(e){
     const navigate = useNavigate();
     const [email, setEmail] = useState('')
     const [senha, setSenha] = useState('')
-    const [token, setToken] = useState('')
-    const { user, setUser } = useContext(UserContext);
+    const {setToken} = useContext(TokenContext);
+    // const { user, setUser } = useContext(UserContext);
     async function login(e) {
         if (email == '' || senha == '') {
             alert('preencha todos os campos')
             return
         }
         e.preventDefault();
+
         try {
-            const resposta = await axios.post(`${reqRoot}/signin`, {
+            const resposta = await axios.post(`${reqRoot}signin`, {
                 email: email, password: senha
             })
-            setToken(resposta.data)
+            setToken({
+                headers: {
+                    "Authorization": `Bearer ${resposta.data}`
+                }
+            })
             navigate("/timeline")    
         } catch (err) {
             console.log(err)
@@ -33,27 +38,27 @@ export default function Login(e){
             }
         }
     }
-    async function createNewSession() {
-        const token = localStorage.getItem("linkr-localUser");
-        if (token) {
-            try {
-                const request = await axios.post(`${reqRoot}/authIn`, {
-                    headers: {
-                        "Authorization": `Bearer ${token}`
-                    }
-                });
-                setUser(request.data);
-                localStorage.setItem("linkr-localUser", request.data.token);
-                navigate("/timeline");
-            } catch (err) {
-                console.log(err.response);
-            }
-        }
-    } 
+    // async function createNewSession() {
+    //     const token = localStorage.getItem("linkr-localUser");
+    //     if (token) {
+    //         try {
+    //             const request = await axios.post(`${reqRoot}authIn`, {
+    //                 headers: {
+    //                     "Authorization": `Bearer ${token}`
+    //                 }
+    //             });
+    //             setUser(request.data);
+    //             localStorage.setItem("linkr-localUser", request.data.token);
+    //             navigate("/timeline");
+    //         } catch (err) {
+    //             console.log(err.response);
+    //         }
+    //     }
+    // } 
     
-    useEffect(() => {
-        createNewSession()
-    })
+    // useEffect(() => {
+    //     createNewSession()
+    // })
     return (
 
         <Container>
@@ -74,7 +79,7 @@ export default function Login(e){
                         <Button onClick={login}>Login</Button>
                     </Box>
                     <Box1>
-                        <P1 onClick={() => navigate("/sign-up")}> First time? Create an account!</P1>
+                        <P1 onClick={() => navigate("/signup")}> First time? Create an account!</P1>
                     </Box1>
 
                 </form>
