@@ -6,6 +6,7 @@ import Header from "../Header/Header.js";
 import Hashtag from "./Hashtag";
 import { Link ,useNavigate } from "react-router-dom";
 import ReactTooltip from 'react-tooltip';
+import jooj from "./jooj.png";
 export default function Timeline(){
     const texto =`teste ${10}`
     const [pesq,setPesq]=useState('')
@@ -54,9 +55,11 @@ export default function Timeline(){
          }, []);
          
     return(
-        
+        //  <button  data-tip = {texto} >Curtidas</button>
+        //  < ReactTooltip  / >
         <Container>
-          <Header></Header>
+            
+         
             <button  data-tip = {texto} >Curtidas</button>
             <Linkr>
                 <LinkrTitulo>
@@ -74,6 +77,25 @@ export default function Timeline(){
             
             </Linkr>
             < ReactTooltip  / >
+            <Body>
+                <PostsContainer>
+                <TimelineTextContainer>
+                    timeline
+                </TimelineTextContainer>
+                <UserPublish>
+                    <UserPicture src={jooj} />
+                    <UserTextBoxes>
+                        <UrlInputBox placeholder="http://..."/>
+                        <TextInputBox />
+                    </UserTextBoxes>
+                </UserPublish>
+                    <Post></Post>
+                    <Post></Post>
+                    <Post></Post>
+                    <Post></Post>
+                </PostsContainer>
+            </Body>
+            <Header></Header>
         </Container>
         
     )
@@ -83,7 +105,6 @@ const Container = styled.div`
     height: 100vh;
     background-color:#333333;
     position: relative;
-  
 `;
 const Linkr = styled.div`
     width: 20vw;
@@ -130,22 +151,105 @@ const Teste1 = styled.div`
 
   
 `;
-const Barra = styled.div`
+const Body = styled.div`
     width: 100vw;
-    height: 70px;
-    display:flex;
+    height: auto;
+    min-height: calc(100vh - 70px);
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    z-index: 0;
+`
+
+const PostsContainer = styled.div`
+    width: 600px;
+    min-height: calc(100vh -70px);
+    height: auto;
+    background-color: red;
+    padding-top: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-direction: column;
     position: relative;
-    justify-content:space-between;
-    align-items:center;
-    background-color:#171717;
-    p{
-        color:white;
+`
+
+const TimelineTextContainer = styled.div`
+    height: 120px;
+    width: 100%;
+    background-color: aqua;
+
+    font-size: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+`
+
+const UserPublish = styled.div`
+    height: 200px;
+    width: 100%;
+
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    border-radius: 16px;
+
+    input {
+        width: 80%;
+        height: 40px;
+
     }
-  
-`;
-const Input = styled.input`
-    width: 25vw;
-    height: 35PX;
-   
-  
-`;
+
+`
+
+const UserPicture = styled.img`
+    height: 50px;
+    width: 50px;
+    border-radius: 27px;
+    margin: 10px auto 130px;
+`
+
+const UserTextBoxes = styled.div`
+    height: 100%;
+    width: 85%;
+`
+
+const UrlInputBox = styled.input`
+    height: 30px;
+    width: 95%;
+    background-color: #EFEFEF;
+    border: 1px solid #EFEFEF;
+    border-radius: 5px;
+
+    ::placeholder {
+        color: #949494;
+        padding-left: 10px;
+    }
+`
+
+const TextInputBox = styled.input`
+    height: 70px;
+    width: 95%;
+    background-color: #EFEFEF;
+    border: 1px solid #EFEFEF;
+    border-radius: 5px;
+    margin-top: 20px;
+
+    ::placeholder {
+        color: #949494;
+        padding-left: 10px;
+    }
+`
+
+const Post = styled.div`
+    min-height: 200px;
+    height: auto;
+    width: 100%;
+
+    background-color: blue;
+    margin-bottom: 20px;
+
+`

@@ -1,42 +1,68 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import ReactTooltip from 'react-tooltip';
+import { useNavigate } from "react-router-dom";
+import reqRoot from "../../service/reqRoot.js";
+import TokenContext from "../../contexts/TokenContext.js";
+// import generateHeader from "../../utils/TokenHeaders";
 
-import { Link ,useNavigate } from "react-router-dom";
 export default function Login(e){
     const navigate = useNavigate();
-    const [email,setEmail]=useState('')
-    const [senha,setSenha]=useState('')
-    const [token,setToken]=useState('')
+    const [email, setEmail] = useState('')
+    const [senha, setSenha] = useState('')
+    const {setToken} = useContext(TokenContext);
     const [disable, setDisable] = useState(false);
-    async function login(e){
-        if(email=='' ||senha ==''){
+    // const { user, setUser } = useContext(UserContext);
+    async function login(e) {
+        if (email == '' || senha == '') {
             alert('preencha todos os campos')
             return
         }
         e.preventDefault();
-        try{
-            const resposta=await axios.post('http://localhost:4000/signin',{
-                 email:email, password:senha
+
+        try {
+            const resposta = await axios.post(`${reqRoot}signin`, {
+                email: email, password: senha
             })
-            setToken(resposta.data)
-            console.log(resposta.data)
+            setToken({
+                headers: {
+                    "Authorization": `Bearer ${resposta.data}`
+                }
+            })
             navigate("/timeline")    
-       }catch(e){
-        console.log(e)
-            if(e.response.data ==undefined){
-            alert('servidor off')
-            setDisable(false)
-            }else{
-                alert(e.response.data)
-                setDisable(false)
+        } catch (err) {
+            console.log(err)
+            if (err.response.data === undefined) {
+            alert('servidor off') 
+            } else {
+            alert(err.response.data)
             }
-          
-       }
+        }
     }
-    return(
-        
+    // async function createNewSession() {
+    //     const token = localStorage.getItem("linkr-localUser");
+    //     if (token) {
+    //         try {
+    //             const request = await axios.post(`${reqRoot}authIn`, {
+    //                 headers: {
+    //                     "Authorization": `Bearer ${token}`
+    //                 }
+    //             });
+    //             setUser(request.data);
+    //             localStorage.setItem("linkr-localUser", request.data.token);
+    //             navigate("/timeline");
+    //         } catch (err) {
+    //             console.log(err.response);
+    //         }
+    //     }
+    // } 
+    
+    // useEffect(() => {
+    //     createNewSession()
+    // })
+    return (
+
         <Container>
             <Text>
                 <H1 data-tip="hello world">Linkr </H1>
@@ -61,9 +87,9 @@ export default function Login(e){
              </form>
             </BoxLogin>
         </Container>
-        
+
     )
-    
+
 }
 const Container = styled.div`
     width: 100vw;
@@ -76,7 +102,7 @@ const Container = styled.div`
    
   
 `;
-const BoxLogin =styled.div`
+const BoxLogin = styled.div`
     width:400px;
     height:100vh;
     background-color:#333333;
@@ -134,21 +160,21 @@ const Text = styled.div`
     }
    
     
-`;  
+`;
 const H1 = styled.h1`
   font-size:100px;
   color:white;
     
-`;  
+`;
 const P = styled.p`
   font-size:25px;
   color:white;
     
-`; 
+`;
 const P1 = styled.p`
   font-size:15px;
   margin-left:55px;
   color:white;
     
-`; 
-   
+`;
+
