@@ -63,22 +63,32 @@ export default function Timeline(){
                         posts === null && error !== null ? <h1>An error occured while trying to fetch the posts, please refresh the page</h1> :
                             posts.length === 0 ? <h1>There are no posts yet</h1> :
                                 posts.map((post, index) => { return (
-                                    <Post key={index}>
-                                        <PostUserPicture src={post.image}/>
+                                    <Post key={index} onClick={() => window.open(post.userPostLink)}>
+                                        <PostUserPicture src={post.userImage}/>
                                         <PostTextBoxes>
-                                            <PostUserName>{post.name}</PostUserName>
-                                            <PostUserText>{post.description}</PostUserText>
+                                            <PostUserName>{post.userName}</PostUserName>
+                                            <PostUserText>{post.userPostDescription}</PostUserText>
+                                            <PostSnippetContainer>
+                                                <PostSnippetDescription>
+                                                    <PostSnippetDescriptionH1>
+                                                        {post.metadataTitle}
+                                                    </PostSnippetDescriptionH1>
+                                                    <PostSnippetDescriptionH2 isLink={false}>
+                                                        {post.metadataDescription}
+                                                    </PostSnippetDescriptionH2>
+                                                    <PostSnippetDescriptionH2 isLink={true}>
+                                                        {post.userPostLink}
+                                                    </PostSnippetDescriptionH2>
+                                                </PostSnippetDescription>
+                                                <PostSnippetImage>
+                                                    <img src={post.metadataImage} />
+                                                </PostSnippetImage>
+                                            </PostSnippetContainer>
                                         </PostTextBoxes>
+                                        
                                     </Post>
                                 )})
                     }
-                    <Post>
-                        <PostUserPicture src={jooj}/>
-                        <PostTextBoxes>
-                            <PostUserName>Joãozinho Joãozão</PostUserName>
-                            <PostUserText>XANGARINGA xungaringa ringa ringa xangari xunga xaringa xarangara xangara</PostUserText>
-                        </PostTextBoxes>
-                    </Post>
                 </PostsContainer>
             </Body>
         
@@ -151,7 +161,7 @@ const PostUserPicture = styled.img`
     height: 50px;
     width: 50px;
     border-radius: 27px;
-    margin: 10px auto 220px;
+    margin: 10px 20px 220px;
 `
 
 const PostUserName = styled.div`
@@ -180,8 +190,55 @@ const PostTextBoxes =  styled.div`
     flex-direction: column;
 `
 
-const Snippet = styled.div`
-    width: 95%;
+const PostSnippetContainer = styled.div`
+    width: 480px;
     height: 150px;
-    background-color: white;
+    border-radius: 11px;
+    border: 1px solid #4d4d4d;
+
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+
+    cursor: pointer;
+`
+
+const PostSnippetDescription = styled.div`
+    width: calc(100% - 150px);
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-direction: column;
+`
+
+const PostSnippetDescriptionH1 = styled.div`
+    width: 90%;
+    height: 25%;
+    font-size: 16px;
+    line-height: 20px;
+    color: #CECECE;
+`
+
+const PostSnippetDescriptionH2 = styled.div`
+    width: 90%;
+    height: fit-content;
+    max-height: 30%;
+    font-size: 11px;
+    line-height: 13px;
+    color: ${(props) => props.isLink ? "#CECECE" : "#9B9595"};
+`
+
+const PostSnippetImage = styled.div`
+    width: 150px;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+        max-width: 100%;
+        max-height: 100%;
+    }
 `
