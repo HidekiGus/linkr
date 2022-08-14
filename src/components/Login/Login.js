@@ -70,6 +70,10 @@ const Container = styled.div`
     height: 100vh;
     background-color:#151515;
     position: relative;
+    @media(max-width: 800px) {
+       
+    }
+   
   
 `;
 const BoxLogin =styled.div`
@@ -82,6 +86,10 @@ const BoxLogin =styled.div`
     display:flex;
     align-items:center;
     flex-direction:center;
+
+    @media(max-width: 800px) {
+        height:80vh;
+    }
    
 
 `;
@@ -119,6 +127,12 @@ const Text = styled.div`
    position: absolute;
 	left: 20vw;
 	top: 40vh;
+    @media(max-width: 800px) {
+        height:80vh;
+        left: 20vw;
+	    top: 0vh;
+    }
+   
     
 `;  
 const H1 = styled.h1`

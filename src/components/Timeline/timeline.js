@@ -9,7 +9,7 @@ import ReactTooltip from 'react-tooltip';
 export default function Timeline(){
     const texto =`teste ${10}`
     const [pesq,setPesq]=useState('')
-    const [chave,setChave]=useState('teste')
+   
     const [res,setRes]=useState([])
     const [get,getRes]=useState([])
     const caixa=['t','e','s','t','e']
@@ -18,7 +18,7 @@ export default function Timeline(){
             return
         }
        
-        setChave('teste1')
+    
      
         try{
             const resposta=await axios.get(`http://localhost:4000/timeline/?nome=${pesq}`,{
@@ -52,6 +52,7 @@ export default function Timeline(){
          getpg1()
         
          }, []);
+         
     return(
         
         <Container>
