@@ -7,7 +7,6 @@ import "./components/Timeline/teste.css";
 import TokenContext from "./contexts/TokenContext.js";
 // import UserContext from './contexts/UserContext.js';
 
-
 export default  function App() {
   const [user, setUser] = useState({
     id: "",
@@ -32,6 +31,5 @@ export default  function App() {
     {/* </UserContext.Provider> */}
     </BrowserRouter>
   </div>
- 
 )
 }

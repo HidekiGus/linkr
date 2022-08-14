@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import reqRoot from '../service/reqRoot.js';
 
+
 export default function SignUp() {
     const navigate = useNavigate();
     const [user, setUser] = useState({email: "", password: "", name: "", image: ""});
