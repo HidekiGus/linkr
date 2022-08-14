@@ -6,6 +6,8 @@ import SignUp from "./pages/SignUp.js";
 import "./components/Timeline/teste.css";
 import TokenContext from "./contexts/TokenContext.js";
 // import UserContext from './contexts/UserContext.js';
+import"./css/reset.css"
+
 
 export default  function App() {
   const [user, setUser] = useState({
@@ -32,4 +34,6 @@ export default  function App() {
     </BrowserRouter>
   </div>
 )
+//<UserContext.Provider value={{ user, setUser }}>
+//</UserContext.Provider>
 }
