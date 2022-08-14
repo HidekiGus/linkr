@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
+import ReactTooltip from 'react-tooltip';
 import { useNavigate } from "react-router-dom";
 import reqRoot from "../../service/reqRoot.js";
 import TokenContext from "../../contexts/TokenContext.js";
@@ -11,6 +12,7 @@ export default function Login(e){
     const [email, setEmail] = useState('')
     const [senha, setSenha] = useState('')
     const {setToken} = useContext(TokenContext);
+    const [disable, setDisable] = useState(false);
     // const { user, setUser } = useContext(UserContext);
     async function login(e) {
         if (email == '' || senha == '') {
@@ -63,26 +65,26 @@ export default function Login(e){
 
         <Container>
             <Text>
-                <H1>Linkr </H1>
-                <P>save, share and discover</P>
+                <H1 data-tip="hello world">Linkr </H1>
+                <P >save, share and discover</P>
                 <P>the best links on the web</P>
             </Text>
             <BoxLogin>
-                <form >
-                    <Box>
-                        <Input type={'text'} value={email} onChange={(e) => setEmail(e.target.value)} placeholder='e-mail'></Input>
-                    </Box>
-                    <Box>
-                        <Input type={'text'} placeholder='password' value={senha} onChange={(e) => setSenha(e.target.value)}></Input>
-                    </Box>
-                    <Box>
-                        <Button onClick={login}>Login</Button>
-                    </Box>
-                    <Box1>
-                        <P1 onClick={() => navigate("/signup")}> First time? Create an account!</P1>
-                    </Box1>
-
-                </form>
+            <form onSubmit={login}>
+             <Box>
+             <Input type={'text'} value={email}  onChange={(e) => setEmail(e.target.value)} placeholder='e-mail'></Input>
+             </Box>
+             <Box>
+             <Input type={'text'}  placeholder='password'  value={senha} onChange={(e) => setSenha(e.target.value)}></Input>
+             </Box>
+             <Box>
+             <Button  disabled={disable} >Login</Button>
+             </Box>
+             <Box1>
+                <P1 onClick={()=>navigate("/signup")  }> First time? Create an account!</P1>
+             </Box1>
+          
+             </form>
             </BoxLogin>
         </Container>
 
@@ -94,6 +96,10 @@ const Container = styled.div`
     height: 100vh;
     background-color:#151515;
     position: relative;
+    @media(max-width: 800px) {
+       
+    }
+   
   
 `;
 const BoxLogin = styled.div`
@@ -106,6 +112,10 @@ const BoxLogin = styled.div`
     display:flex;
     align-items:center;
     flex-direction:center;
+
+    @media(max-width: 800px) {
+        height:80vh;
+    }
    
 
 `;
@@ -143,6 +153,12 @@ const Text = styled.div`
    position: absolute;
 	left: 20vw;
 	top: 40vh;
+    @media(max-width: 800px) {
+        height:80vh;
+        left: 20vw;
+	    top: 0vh;
+    }
+   
     
 `;
 const H1 = styled.h1`

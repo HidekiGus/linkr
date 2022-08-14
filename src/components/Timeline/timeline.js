@@ -1,9 +1,11 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useState, useEffect  } from "react";
 import axios from "axios";
 import Div from "./Div.js";
 import Header from "../Header/Header.js";
+import Hashtag from "./Hashtag";
 import { Link ,useNavigate } from "react-router-dom";
+import ReactTooltip from 'react-tooltip';
 import jooj from "./jooj.png";
 import PostInsert from "../PostInsert.js";
 
@@ -29,10 +31,10 @@ export default function Timeline(){
             return
         }
        
-        setChave('teste1')
+    
      
         try{
-            const resposta=await axios.get(`http://localhost:5000/timeline/?nome=${pesq}`,{
+            const resposta=await axios.get(`http://localhost:4000/timeline/?nome=${pesq}`,{
                 pesq
             })
             setRes(resposta.data)
@@ -49,10 +51,44 @@ export default function Timeline(){
         }
     
     }
-    return(
+    useEffect(() => {
+        async function getpg1(){
+         try{
+            const promessa=await axios.get('http://localhost:4000/hashtagsTrending')      
+            getRes(promessa.data)
+            console.log(promessa.data)
+           
+         }catch(e){
+            console.log('ruim no getpg1')
+         }
+        }
+         getpg1()
         
+         }, []);
+         
+    return(
+        //  <button  data-tip = {texto} >Curtidas</button>
+        //  < ReactTooltip  / >
         <Container>
-            <Header />
+            
+         
+            <button  data-tip = {texto} >Curtidas</button>
+            <Linkr>
+                <LinkrTitulo>
+                <p>trending</p>
+                </LinkrTitulo> 
+                <Linha></Linha>
+                
+                {get.map((ns)=>{
+            return(
+                <>
+                   <Hashtag nome={ns.nome} > </Hashtag>
+                </>
+                )
+            })}
+            
+            </Linkr>
+            < ReactTooltip  / >
             <Body>
                 <PostsContainer>
                     <TimelineTextContainer>
@@ -91,7 +127,7 @@ export default function Timeline(){
                     }
                 </PostsContainer>
             </Body>
-        
+            <Header></Header>
         </Container>
         
     )
