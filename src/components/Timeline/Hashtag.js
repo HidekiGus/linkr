@@ -6,7 +6,7 @@ export default function hashtag(props){
         <>
             <Box>
           
-            <div><p>{nome}</p></div>
+            <div><p>#{nome}</p></div>
             </Box>
            
         </>

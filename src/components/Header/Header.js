@@ -1,14 +1,18 @@
 import styled from "styled-components";
 import { useState, useContext } from 'react';
 import { useNavigate } from "react-router-dom";
-
+import Div from "./Div.js";
 import { BiSearchAlt } from 'react-icons/bi';
 import { IoIosArrowUp } from 'react-icons/io';
 import { IoIosArrowDown } from 'react-icons/io';
-
+import axios from "axios";
 export default function Header() {
     const [hidden, setHidden] = useState(true);
-
+    const [pesq,setPesq]=useState('')
+    const [chave,setChave]=useState('pesquisa')
+    const [res,setRes]=useState([])
+    const [get,getRes]=useState([])
+  
     function toggleHidden() {
         if (hidden) {
             setHidden(false);
@@ -16,12 +20,42 @@ export default function Header() {
             setHidden(true);
         }
     }
+    async function pesquisa(){
+        if(pesq.length <3){
+            return
+        }
+        setChave('pesquisa2')
+       
+     
+        try{
+            const resposta=await axios.get(`http://localhost:4000/timeline/?nome=${pesq}`,{
+                pesq
+            })
+            setRes(resposta.data)
+           
+            //navigate("/pg1")    
+       }catch(e){
+        console.log(e)
+            if(e.response.data ==undefined){
+            alert('servidor off')
+            }else{
+                alert(e.response.data)
+            }
+          
+       }
+    
+    }
+    function fechar(){
+        setChave('pesquisa')
+    }
+    
 
     return (
+        <>
         <Container>
             <Logo>linkr</Logo>
             <SearchBar>
-                <SBInput placeholder="Search for people" />
+                <SBInput type='text' onKeyUp={pesquisa} value={pesq} onChange={(e) => setPesq(e.target.value)} placeholder="Search for people" />
                 <SearchButton onClick={() => console.log("Procurar")}>
                     <SBIcon />
                 </SearchButton>
@@ -31,7 +65,21 @@ export default function Header() {
                 <ProfileImage alt="foto de perfil" src="https://i.ytimg.com/vi/RTFJsGtJEtY/maxresdefault.jpg" />
                 <ToggleMenu display={hidden ? "none" : "flex"} />
             </Menu>
+            
         </Container>
+        <Container2>
+            <div className={chave} >
+            {res.map((ns)=>{
+            return(
+                <>
+                   <Div nome={ns.name} img={ns.image} fechar={fechar}> </Div>
+                </>
+                )
+            })}
+            </div>
+        </Container2>
+        
+        </>
     )
 }
 
@@ -50,6 +98,25 @@ function ToggleMenu({ display }) {
     )
 }
 
+const Pesquisa =styled.div`
+    width: 535px;
+    height: 600px;
+    background-color:red;
+
+`;
+const Container2 = styled.div`
+    width: 100%;
+   
+    padding: 24px;
+   
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    left: 0;
+    top:35px
+    ;
+`;
 const Container = styled.div`
     width: 100%;
     height: 72px;

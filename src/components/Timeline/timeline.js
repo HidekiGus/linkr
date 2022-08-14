@@ -2,7 +2,8 @@ import styled from "styled-components";
 import { useState, useEffect  } from "react";
 import axios from "axios";
 import Div from "./Div.js";
-import hashtag from "./Hashtag";
+import Header from "../Header/Header.js";
+import Hashtag from "./Hashtag";
 import { Link ,useNavigate } from "react-router-dom";
 import ReactTooltip from 'react-tooltip';
 export default function Timeline(){
@@ -54,38 +55,22 @@ export default function Timeline(){
     return(
         
         <Container>
-            <Barra>
-                <p>links</p>
-                <Input type='text' onKeyUp={pesquisa} value={pesq} onChange={(e) => setPesq(e.target.value)}></Input>
-              
-                <div>
-                    <p>foto</p>
-                </div>
-                <div className={chave}>
-                {res.map((ns)=>{
-            return(
-                <>
-                   <Div nome={ns.name} img={ns.image}> </Div>
-                </>
-                )
-            })}
-                </div>
-            </Barra>
+          <Header></Header>
             <button  data-tip = {texto} >Curtidas</button>
             <Linkr>
                 <LinkrTitulo>
                 <p>trending</p>
                 </LinkrTitulo> 
                 <Linha></Linha>
-                <P>
+                
                 {get.map((ns)=>{
             return(
                 <>
-                   <Div nome={ns.nome} > </Div>
+                   <Hashtag nome={ns.nome} > </Hashtag>
                 </>
                 )
             })}
-            </P>
+            
             </Linkr>
             < ReactTooltip  / >
         </Container>
