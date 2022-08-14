@@ -2,7 +2,8 @@ import axios from "axios";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import reqRoot from './reqRoot.js';
+import reqRoot from '../service/reqRoot.js';
+
 
 export default function SignUp() {
     const navigate = useNavigate();
@@ -11,7 +12,7 @@ export default function SignUp() {
 
     function checkFields(event) {
         event.preventDefault();
-        setDisable(true)
+        setDisable(true);
 
         if(!user.email || !user.password || !user.name) {
             setDisable(false)
