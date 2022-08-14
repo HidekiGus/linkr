@@ -5,7 +5,7 @@ import Div from "./Div.js";
 import Header from "../Header/Header.js";
 import { Link ,useNavigate } from "react-router-dom";
 import jooj from "./jooj.png";
-import { ReactTagify } from "react-tagify";
+import PostInsert from "../PostInsert.js";
 
 
 export default function Timeline(){
@@ -38,15 +38,15 @@ export default function Timeline(){
             setRes(resposta.data)
            
             //navigate("/pg1")    
-       }catch(e){
+        }catch(e){
         console.log(e)
             if(e.response.data ==undefined){
             alert('servidor off')
             }else{
                 alert(e.response.data)
             }
-          
-       }
+        
+        }
     
     }
     return(
@@ -55,16 +55,10 @@ export default function Timeline(){
             <Header />
             <Body>
                 <PostsContainer>
-                <TimelineTextContainer>
-                    timeline
-                </TimelineTextContainer>
-                <UserPublish>
-                    <UserPicture src={jooj} />
-                    <UserTextBoxes>
-                        <UrlInputBox placeholder="http://..."/>
-                        <TextInputBox />
-                    </UserTextBoxes>
-                </UserPublish>
+                    <TimelineTextContainer>
+                        timeline
+                    </TimelineTextContainer>
+                    <PostInsert/>
                     {posts === null && error === null ? <h1>Loading</h1> : 
                         posts === null && error !== null ? <h1>An error occured while trying to fetch the posts, please refresh the page</h1> :
                             posts.length === 0 ? <h1>There are no posts yet</h1> :
@@ -111,7 +105,7 @@ const Body = styled.div`
 `
 
 const PostsContainer = styled.div`
-    width: 600px;
+    width: 610px;
     min-height: calc(100vh -70px);
     height: auto;
     padding-top: 100px;
@@ -130,62 +124,6 @@ const TimelineTextContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: flex-start;
-`
-
-const UserPublish = styled.div`
-    height: 200px;
-    width: 100%;
-
-    background-color: white;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    border-radius: 16px;
-
-    input {
-        width: 80%;
-        height: 40px;
-    }
-`
-
-const UserPicture = styled.img`
-    height: 50px;
-    width: 50px;
-    border-radius: 27px;
-    margin: 10px auto 130px;
-`
-
-const UserTextBoxes = styled.div`
-    height: 100%;
-    width: 85%;
-`
-
-const UrlInputBox = styled.input`
-    height: 30px;
-    width: 95%;
-    background-color: #EFEFEF;
-    border: 1px solid #EFEFEF;
-    border-radius: 5px;
-
-    ::placeholder {
-        color: #949494;
-        padding-left: 10px;
-    }
-`
-
-const TextInputBox = styled.input`
-    height: 70px;
-    width: 95%;
-    background-color: #EFEFEF;
-    border: 1px solid #EFEFEF;
-    border-radius: 5px;
-    margin-top: 20px;
-
-    ::placeholder {
-        color: #949494;
-        padding-left: 10px;
-    }
 `
 
 const Post = styled.div`
