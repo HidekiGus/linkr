@@ -67,6 +67,7 @@ export default function PostInsert(img) {
 }
 
 const NewPostBox=styled.div`
+    background-color: #FFFFFF;
     display: flex;
     height: 210px;
     width: 610px;
