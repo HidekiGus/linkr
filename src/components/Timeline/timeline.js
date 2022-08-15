@@ -14,7 +14,7 @@ import generateHeader from "../../utils/TokenHeaders.js";
 import UserContext from "../../contexts/UserContext.js";
 
 export default function Timeline() {
-    const [posts, setPosts] = useState(null);
+    const [posts, setPosts] = useState([]);
     const [error, setError] = useState(null);
     const [trending, setTrending] = useState([]);
     const { user } = useContext(UserContext);
