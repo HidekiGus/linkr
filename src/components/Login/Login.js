@@ -65,7 +65,7 @@ export default function Login(e) {
                         <Input type={'text'} value={email} onChange={(e) => setEmail(e.target.value)} placeholder='e-mail'></Input>
                     </Box>
                     <Box>
-                        <Input type={'text'} placeholder='password' value={senha} onChange={(e) => setSenha(e.target.value)}></Input>
+                        <Input type={'password'} placeholder='password' value={senha} onChange={(e) => setSenha(e.target.value)}></Input>
                     </Box>
                     <Box>
                         <Button disabled={disable} >Login</Button>
@@ -102,7 +102,7 @@ const BoxLogin = styled.div`
     flex-direction:center;
 
     @media(max-width: 800px) {
-        height:80vh;
+        height:70vh;
     }
    
 
@@ -133,6 +133,8 @@ const Button = styled.button`
     height: 35px;
     background-color:#1877f2;
     border-radius:5px;
+    color:white;
+    border-radius:6px;
 `;
 const Text = styled.div`
  
@@ -142,7 +144,8 @@ const Text = styled.div`
 	left: 20vw;
 	top: 35vh;
     @media(max-width: 800px) {
-        height:80vh;
+        margin-top:50px;
+        height:30vh;
         left: 20vw;
 	    top: 0vh;
     }
