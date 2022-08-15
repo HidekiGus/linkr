@@ -11,6 +11,7 @@ export default function Post({ post, action }) {
     const [editing, setEditing] = useState(false);
     const [description, setDescription] = useState(post.userPostDescription);
     const [disabled, setDisabled] = useState(false);
+    const [deleting, setDeleting] = useState(false);
     const { user } = useContext(UserContext);
     const config = generateHeader(user);
     const ref = useRef(null);
@@ -32,7 +33,7 @@ export default function Post({ post, action }) {
         if (!editing) {
             setDisabled(true);
             try {
-                const request = await axios.put(`${reqRoot}/posts/update/`, config);
+                await axios.put(`${reqRoot}/posts/update/${post.id}`, config);
                 setDisabled(false)
                 toggleEditing();
             } catch (err) {
@@ -40,9 +41,11 @@ export default function Post({ post, action }) {
                 setDescription(post.userPostDescription);
                 setTimeout(() => setDisabled(false), 3000);
             }
-        } else {
-            console.log("nntá editando");
         }
+    }
+
+    async function deletePost() {
+        
     }
 
     function toggleEditing() {
@@ -60,11 +63,13 @@ export default function Post({ post, action }) {
     }, []);
 
     return (
+        <>
+        <Modal display={deleting ? "flex" : "none"} setDeleting={() => setDeleting(false)} postId={post.id} />
         <PostContainer>
             <PostUserPicture src={post.userImage} />
             <Icons>
                 <EditIcon onClick={toggleEditing} />
-                <DeleteIcon />
+                <DeleteIcon onClick={() => setDeleting(true)} />
             </Icons>
             <PostTextBoxes>
                 <PostUserName>{post.userName}</PostUserName>
@@ -93,8 +98,38 @@ export default function Post({ post, action }) {
                     </PostSnippetImage>
                 </PostSnippetContainer>
             </PostTextBoxes>
-
         </PostContainer>
+        </>
+    )
+}
+
+function Modal({setDeleting, postId}) {
+    const { user } = useContext(UserContext);
+    const config = generateHeader(user) 
+
+    async function deletePost() {
+        try {
+            await axios.delete(`${reqRoot}/posts/delete/${postId}`, config);
+            setDeleting();
+        } catch (err) {
+            setDeleting();
+            alert("Não foi possível remover o post :(");
+        }
+    }
+
+    return (
+        <>
+        <ModalBG />
+        <ModalBox>
+            <h1>
+                Are you sure you want to delete this post?
+            </h1>
+            <ModalButtons>
+                <NoButton onClick={setDeleting}>No, go back</NoButton>
+                <YesButton>Yes, delete it</YesButton>
+            </ModalButtons>
+        </ModalBox>
+        </>
     )
 }
 
@@ -246,3 +281,66 @@ const DeleteIcon = styled(FaTrashAlt)`
     color: #FFFFFF;
     cursor: pointer;
 `
+
+const ModalBG = styled.div`
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.9);
+    position: fixed;
+    top: 0;
+    left: 0;
+`;
+
+const ModalBox = styled.div`
+    width: 600px;
+    height: 264px;
+    display: ${props => props.display};
+    flex-direction: column;
+    justif-content: space-around;
+    align-items: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+
+    h1 {
+        max-width: 340px;
+        font-family: 'Lato', sans-serif;
+        font-weight: 700;
+        font-size: 34px;
+        color: #FFFFFF;
+        word-wrap: break-word;
+    }
+`;
+
+const ModalButtons = styled.div`
+    width: 80%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+`;
+
+const YesButton = styled.button`
+    width: 130px;
+    height: 35px;
+    background: #1877F2;
+    border: 0 solid transparent;
+    border-radius: 5px;
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: #FFFFFF;
+`;
+
+const NoButton = styled.button`
+    width: 130px;
+    height: 35px;
+    background: #FFFFFF;
+    border: 0 solid transparent;
+    border-radius: 5px;
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: #1877F2;
+`;
