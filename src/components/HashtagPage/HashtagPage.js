@@ -26,7 +26,6 @@ export default function HashtagPage() {
     return (
         <>
             <Header />
-            essa é uma página que mostra os posts com uma hashtag
         </>
     )
 }

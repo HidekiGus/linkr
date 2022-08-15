@@ -16,3 +16,17 @@
 	right: 513px;
     
 }
+.pesquisa{
+    width: 550px;
+    height: 600px;
+    background-color:red;
+    display: none;
+}
+.pesquisa2{
+    width: 535px;
+    height: 300px;
+    border-radius: 10px;
+    background-color:#e6e6e6;
+  
+   
+}

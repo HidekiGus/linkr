@@ -11,7 +11,7 @@ export default function SignUp() {
 
     function checkFields(event) {
         event.preventDefault();
-        setDisable(true)
+        setDisable(true);
 
         if(!user.email || !user.password || !user.name) {
             setDisable(false)
