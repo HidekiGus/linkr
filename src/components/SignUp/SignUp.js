@@ -2,8 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import reqRoot from '../service/reqRoot.js';
-
+import reqRoot from "../../utils/reqRoot.js";
 
 export default function SignUp() {
     const navigate = useNavigate();
@@ -30,7 +29,7 @@ export default function SignUp() {
 
     async function sendNewUser() {
         try {
-            await axios.post(`${reqRoot}signup`, user);
+            await axios.post(`${reqRoot}/signup`, user);
             navigate('/')
         } catch (error) {
             setDisable(false)
@@ -73,6 +72,7 @@ const Container = styled.div`
     font-weight: 700;
 
     h1 {
+        font-family: 'Passion One', cursive;
         font-size: 106px;
         margin-bottom: 30px;
     }
@@ -99,6 +99,7 @@ const Brand = styled.div`
     padding: 15px;
 
     p {
+        font-family: 'Oswald', sans-serif;
         font-size: 43px;
         margin-bottom: 15px;
     }

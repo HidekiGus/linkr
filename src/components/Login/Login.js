@@ -3,17 +3,16 @@ import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import ReactTooltip from 'react-tooltip';
 import { useNavigate } from "react-router-dom";
-import reqRoot from "../../service/reqRoot.js";
-import TokenContext from "../../contexts/TokenContext.js";
-// import generateHeader from "../../utils/TokenHeaders";
+import reqRoot from "../../utils/reqRoot.js";
+import generateHeader from "../../utils/TokenHeaders";
+import UserContext from "../../contexts/UserContext.js";
 
-export default function Login(e){
+export default function Login(e) {
     const navigate = useNavigate();
     const [email, setEmail] = useState('')
     const [senha, setSenha] = useState('')
-    const {setToken} = useContext(TokenContext);
     const [disable, setDisable] = useState(false);
-    // const { user, setUser } = useContext(UserContext);
+    const { user, setUser } = useContext(UserContext);
     async function login(e) {
         if (email == '' || senha == '') {
             alert('preencha todos os campos')
@@ -22,69 +21,60 @@ export default function Login(e){
         e.preventDefault();
 
         try {
-            const resposta = await axios.post(`${reqRoot}signin`, {
+            const resposta = await axios.post(`${reqRoot}/signin`, {
                 email: email, password: senha
             })
-            setToken({
-                headers: {
-                    "Authorization": `Bearer ${resposta.data}`
-                }
-            })
-            navigate("/timeline")    
+            setUser(resposta.data);
+            navigate("/timeline")
         } catch (err) {
             console.log(err)
             if (err.response.data === undefined) {
-            alert('servidor off') 
+                alert('servidor off')
             } else {
-            alert(err.response.data)
+                alert(err.response.data)
             }
         }
     }
-    // async function createNewSession() {
-    //     const token = localStorage.getItem("linkr-localUser");
-    //     if (token) {
-    //         try {
-    //             const request = await axios.post(`${reqRoot}authIn`, {
-    //                 headers: {
-    //                     "Authorization": `Bearer ${token}`
-    //                 }
-    //             });
-    //             setUser(request.data);
-    //             localStorage.setItem("linkr-localUser", request.data.token);
-    //             navigate("/timeline");
-    //         } catch (err) {
-    //             console.log(err.response);
-    //         }
-    //     }
-    // } 
-    
-    // useEffect(() => {
-    //     createNewSession()
-    // })
+    async function createNewSession() {
+        const config = generateHeader(user);
+        try {
+            const request = await axios.post(`${reqRoot}/authIn`, config);
+            setUser(request.data);
+            localStorage.setItem("linkr-localUser", request.data.token);
+            navigate("/timeline");
+        } catch (err) {
+            console.log(err.response);
+        }
+    }
+
+    useEffect(() => {
+        createNewSession()
+    });
+
     return (
 
         <Container>
             <Text>
-                <H1 data-tip="hello world">Linkr </H1>
-                <P >save, share and discover</P>
+                <H1 data-tip="hello world"> linkr </H1>
+                <P>save, share and discover</P>
                 <P>the best links on the web</P>
             </Text>
             <BoxLogin>
-            <form onSubmit={login}>
-             <Box>
-             <Input type={'text'} value={email}  onChange={(e) => setEmail(e.target.value)} placeholder='e-mail'></Input>
-             </Box>
-             <Box>
-             <Input type={'text'}  placeholder='password'  value={senha} onChange={(e) => setSenha(e.target.value)}></Input>
-             </Box>
-             <Box>
-             <Button  disabled={disable} >Login</Button>
-             </Box>
-             <Box1>
-                <P1 onClick={()=>navigate("/signup")  }> First time? Create an account!</P1>
-             </Box1>
-          
-             </form>
+                <form onSubmit={login}>
+                    <Box>
+                        <Input type={'text'} value={email} onChange={(e) => setEmail(e.target.value)} placeholder='e-mail'></Input>
+                    </Box>
+                    <Box>
+                        <Input type={'text'} placeholder='password' value={senha} onChange={(e) => setSenha(e.target.value)}></Input>
+                    </Box>
+                    <Box>
+                        <Button disabled={disable} >Login</Button>
+                    </Box>
+                    <Box1>
+                        <P1 onClick={() => navigate("/signup")}> First time? Create an account!</P1>
+                    </Box1>
+
+                </form>
             </BoxLogin>
         </Container>
 
@@ -99,8 +89,6 @@ const Container = styled.div`
     @media(max-width: 800px) {
        
     }
-   
-  
 `;
 const BoxLogin = styled.div`
     width:400px;
@@ -122,7 +110,7 @@ const BoxLogin = styled.div`
 const Input = styled.input`
     width: 300px;
     height: 35px;
-    border-radius:5px;
+    border-radius: 6px;
 `;
 const Box = styled.div`
     margin-left:30px;
@@ -141,7 +129,7 @@ const Box1 = styled.div`
     
 `;
 const Button = styled.button`
-     width: 300px;
+    width: 300px;
     height: 35px;
     background-color:#1877f2;
     border-radius:5px;
@@ -152,7 +140,7 @@ const Text = styled.div`
    height:400px;
    position: absolute;
 	left: 20vw;
-	top: 40vh;
+	top: 35vh;
     @media(max-width: 800px) {
         height:80vh;
         left: 20vw;
@@ -162,14 +150,17 @@ const Text = styled.div`
     
 `;
 const H1 = styled.h1`
-  font-size:100px;
-  color:white;
-    
+    font-family: 'Passion One', cursive;
+    font-size:106px;
+    font-weight: 700;
+    color: #FFFFFF;
 `;
 const P = styled.p`
-  font-size:25px;
-  color:white;
-    
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+    font-size:25px;
+    line-height: 1.3;
+    color:white;
 `;
 const P1 = styled.p`
   font-size:15px;

@@ -1,18 +1,19 @@
 import styled from "styled-components";
+import axios from "axios";
 import { useState, useContext } from 'react';
 import { useNavigate } from "react-router-dom";
 import Div from "./Div.js";
 import { BiSearchAlt } from 'react-icons/bi';
 import { IoIosArrowUp } from 'react-icons/io';
-import { IoIosArrowDown } from 'react-icons/io';
-import axios from "axios";
+import UserContext from "../../contexts/UserContext";
+import reqRoot from "../../utils/reqRoot.js";
+
 export default function Header() {
     const [hidden, setHidden] = useState(true);
     const [pesq,setPesq]=useState('')
     const [chave,setChave]=useState('pesquisa')
     const [res,setRes]=useState([])
-    const [get,getRes]=useState([])
-  
+    const { user } = useContext(UserContext);
     function toggleHidden() {
         if (hidden) {
             setHidden(false);
@@ -28,16 +29,13 @@ export default function Header() {
        
      
         try{
-            const resposta=await axios.get(`http://localhost:4000/timeline/?nome=${pesq}`,{
+            const resposta=await axios.get(`${reqRoot}/timeline/?nome=${pesq}`,{
                 pesq
             })
             setRes(resposta.data)
-           
-            //navigate("/pg1")    
        }catch(e){
         console.log(e)
-            if(e.response.data ==undefined){
-            alert('servidor off')
+            if(e.response.data ==undefined) {
             }else{
                 alert(e.response.data)
             }
@@ -62,7 +60,7 @@ export default function Header() {
             </SearchBar>
             <Menu>
                 <ToggleIcon onClick={toggleHidden} hidden={hidden ? "0deg" : "180deg"} />
-                <ProfileImage alt="foto de perfil" src="https://i.ytimg.com/vi/RTFJsGtJEtY/maxresdefault.jpg" />
+                <ProfileImage alt="foto de perfil" src={user.image} />
                 <ToggleMenu display={hidden ? "none" : "flex"} />
             </Menu>
             
@@ -98,12 +96,6 @@ function ToggleMenu({ display }) {
     )
 }
 
-const Pesquisa =styled.div`
-    width: 535px;
-    height: 600px;
-    background-color:red;
-
-`;
 const Container2 = styled.div`
     width: 100%;
    
@@ -114,8 +106,7 @@ const Container2 = styled.div`
     align-items: center;
     position: fixed;
     left: 0;
-    top:35px
-    ;
+    top:35px;
 `;
 const Container = styled.div`
     width: 100%;
