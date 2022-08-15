@@ -1,107 +1,88 @@
 import styled from "styled-components";
-import { useState, useEffect  } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import Div from "./Div.js";
 import Header from "../Header/Header.js";
-import Hashtag from "./Hashtag";
-import { Link ,useNavigate } from "react-router-dom";
+import Hashtag from "../Hashtag/Hashtag.js";
+import Post from "../Post/Post.js";
+import { Link, useNavigate } from "react-router-dom";
 import ReactTooltip from 'react-tooltip';
 import jooj from "./jooj.png";
 import PostInsert from "../PostInsert.js";
 import reqRoot from "../../utils/reqRoot.js";
+import generateHeader from "../../utils/TokenHeaders.js";
+import UserContext from "../../contexts/UserContext.js";
 
-export default function Timeline(){
-    const [ posts, setPosts ] = useState(null);
-    const [ error, setError ] = useState(null);
+export default function Timeline() {
+    const [posts, setPosts] = useState(null);
+    const [error, setError] = useState(null);
+    const [trending, setTrending] = useState([]);
+    const { user } = useContext(UserContext);
+    const config = generateHeader(user);
 
     useEffect(() => {
-        const promise = axios.get("http://localhost:4000/posts");
+        const promise = axios.get(`${reqRoot}/posts`, config);
         promise.then((res) => setPosts(res.data));
         promise.catch((err) => setError(err));
     }, []);
 
-    useEffect(() => {
-        async function getpg1(){
-         try{
-            const promessa=await axios.get(`${reqRoot}/hashtagsTrending`)
-            getRes(promessa.data)
-            console.log(promessa.data)
-           
-         }catch(e){
-            console.log('ruim no getpg1')
-         }
+    useEffect(async () => {
+        try {
+            const promessa = await axios.get(`${reqRoot}/hashtagsTrending`, config);
+            setTrending(promessa.data);
+        } catch (err) {
+            console.log('getTrendingHashtags: ' + err);
         }
-         getpg1()
-        
-         }, []);
-         
-    return(
+    }, []);
+
+    return (
         <Container>
+            <Background />
             <Header />
-         
-            <button  data-tip = {texto} >Curtidas</button>
+
+            {/*<button data-tip={texto} >Curtidas</button> */}
             <Linkr>
                 <LinkrTitulo>
-                <p>trending</p>
-                </LinkrTitulo> 
+                    <p>trending</p>
+                </LinkrTitulo>
                 <Linha></Linha>
-                
-                {get.map((ns)=>{
-            return(
-                <>
-                   <Hashtag nome={ns.nome} > </Hashtag>
-                </>
-                )
-            })}
-            
+
+                {trending.map((ns) => {
+                    return (
+                        <>
+                            <Hashtag nome={ns.nome} > </Hashtag>
+                        </>
+                    )
+                })}
+
             </Linkr>
-            < ReactTooltip  />
+            < ReactTooltip />
             <Body>
                 <PostsContainer>
                     <TimelineTextContainer>
                         timeline
                     </TimelineTextContainer>
                     <PostInsert />
-                    {posts === null && error === null ? <h1>Loading...</h1> : 
-                        posts === null && error !== null ? <h1>An error occured while trying to fetch the posts, please refresh the page</h1> :
-                            posts.length === 0 ? <h1>There are no posts yet</h1> :
-                                posts.map((post, index) => <Post post={post} key={index} onClick={() => window.open(post.userPostLink)} />)}
-
+                    {posts === null && error === null ? <h1>Loading...</h1> :
+                    posts === null && error !== null ? <h1>An error occured while trying to fetch the posts, please refresh the page</h1> :
+                    posts.length === 0 ? <h1>There are no posts yet</h1> :
+                    posts.map((post, index) => <Post post={post} key={index} action={() => window.open(post.userPostLink)} />)}
                 </PostsContainer>
             </Body>
         </Container>
-        
+
     )
 }
 
-function Post({ post }) {
-    return (
-        <PostContainer key={index} onClick={() => window.open(post.userPostLink)}>
-        <PostUserPicture src={post.userImage}/>
-        <PostTextBoxes>
-            <PostUserName>{post.userName}</PostUserName>
-            <PostUserText>{post.userPostDescription}</PostUserText>
-            <PostSnippetContainer>
-                <PostSnippetDescription>
-                    <PostSnippetDescriptionH1>
-                        {post.metadataTitle}
-                    </PostSnippetDescriptionH1>
-                    <PostSnippetDescriptionH2 isLink={false}>
-                        {post.metadataDescription}
-                    </PostSnippetDescriptionH2>
-                    <PostSnippetDescriptionH2 isLink={true}>
-                        {post.userPostLink}
-                    </PostSnippetDescriptionH2>
-                </PostSnippetDescription>
-                <PostSnippetImage>
-                    <img src={post.metadataImage} />
-                </PostSnippetImage>
-            </PostSnippetContainer>
-        </PostTextBoxes>
-        
-    </PostContainer>
-    )
-}
+const Background = styled.div`
+    width: 100%;
+    height: 100%;
+    background: #333333;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+`;
 
 const Container = styled.div`
     width: 100vw;
@@ -128,7 +109,7 @@ const LinkrTitulo = styled.div`
     border-radius:10px;
     color:white;
 `;
-const Linha= styled.div`
+const Linha = styled.div`
     height: 2px;
     background-color:#333333;
     margin-bottom:10px;
@@ -137,8 +118,6 @@ const Linha= styled.div`
 const Body = styled.div`
     width: 100vw;
     height: fit-content;
-
-    background-color:#333333;
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -166,111 +145,4 @@ const TimelineTextContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: flex-start;
-`
-
-const PostContainer = styled.div`
-    min-height: 300px;
-    height: auto;
-    width: 100%;
-
-    background-color: white;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    border-radius: 16px;
-    margin: 10px 0;
-
-    background-color: #171717;
-
-    input {
-        width: 80%;
-        height: 40px;
-    }
-`
-
-const PostUserPicture = styled.img`
-    height: 50px;
-    width: 50px;
-    border-radius: 27px;
-    margin: 10px 20px 220px;
-`
-
-const PostUserName = styled.div`
-    height: 20px;
-    width: 95%;
-    color: #FFFFFF;
-    font-size: 20px;
-`
-
-const PostUserText = styled.div`
-    min-height: 30px;
-    height: auto;
-    width: 95%;
-    color: #B7B7B7;
-    font-size: 17px;
-
-    margin: 15px 0;
-`
-
-const PostTextBoxes =  styled.div`
-    height: 100%;
-    width: 85%;
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;
-    flex-direction: column;
-`
-
-const PostSnippetContainer = styled.div`
-    width: 480px;
-    height: 150px;
-    border-radius: 11px;
-    border: 1px solid #4d4d4d;
-
-    display: flex;
-    flex-direction: row;
-    overflow: hidden;
-
-    cursor: pointer;
-`
-
-const PostSnippetDescription = styled.div`
-    width: calc(100% - 150px);
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;
-    flex-direction: column;
-`
-
-const PostSnippetDescriptionH1 = styled.div`
-    width: 90%;
-    height: 25%;
-    font-size: 16px;
-    line-height: 20px;
-    color: #CECECE;
-`
-
-const PostSnippetDescriptionH2 = styled.div`
-    width: 90%;
-    height: fit-content;
-    max-height: 30%;
-    font-size: 11px;
-    line-height: 13px;
-    color: ${(props) => props.isLink ? "#CECECE" : "#9B9595"};
-`
-
-const PostSnippetImage = styled.div`
-    width: 150px;
-    height: 100%;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    img {
-        max-width: 100%;
-        max-height: 100%;
-    }
 `

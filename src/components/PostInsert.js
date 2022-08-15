@@ -1,14 +1,16 @@
 import axios from "axios";
 import { useContext, useState } from "react";
 import styled from "styled-components"
-import TokenContext from "../contexts/TokenContext.js";
-import reqRoot from "../service/reqRoot";
+import UserContext from "../contexts/UserContext.js";
+import reqRoot from "../utils/reqRoot.js";
+import generateHeader from "../utils/TokenHeaders.js";
 
 export default function PostInsert(img) {
-    const {token} = useContext(TokenContext);
+    const { user } = useContext(UserContext);
     const [post, setPost] = useState({link: "", description: ""});
     const [disable, setDisable] = useState(false);
     const [hashtags, setHashtags] = useState([]);
+    const config = generateHeader(user);
 
     function checkPost(event) {
         event.preventDefault();
@@ -34,8 +36,8 @@ export default function PostInsert(img) {
 
     async function sendPost() {
         try {
-            await axios.post(`${reqRoot}post`, {...post, userId: 1}, token);
-            await axios.post(`${reqRoot}hashtag`, {hashtags: hashtags}, token);
+            await axios.post(`${reqRoot}/post`, {...post, userId: 1}, config);
+            await axios.post(`${reqRoot}/hashtag`, {hashtags: hashtags}, config);
             
             setDisable(false);
             setHashtags([]);

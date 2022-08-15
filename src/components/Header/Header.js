@@ -35,8 +35,7 @@ export default function Header() {
             setRes(resposta.data)
        }catch(e){
         console.log(e)
-            if(e.response.data ==undefined){
-            alert('servidor off')
+            if(e.response.data ==undefined) {
             }else{
                 alert(e.response.data)
             }
