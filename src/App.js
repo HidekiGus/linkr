@@ -8,8 +8,10 @@ import UserContext from './contexts/UserContext.js';
 import TokenContext from "./contexts/TokenContext.js";
 import "./css/reset.css"
 import HashtagPage from "./components/HashtagPage/HashtagPage.js";
+import User from "./components/User/User.js";
 
 export default function App() {
+  const [id,setId]=useState('0')
   const [user, setUser] = useState({
     id: "",
     name: "",
@@ -27,7 +29,8 @@ export default function App() {
             <Routes>
               <Route path="/" element={<Login />} />
               <Route path="/signup" element={<SignUp />} />
-              <Route path="/timeline" element={<Timeline />} />
+              <Route path="/timeline" element={<Timeline setId={setId} id={id}/>} />
+              <Route path="/user/:id" element={<User setId={setId} id={id}/>} />
               <Route path="/hashtag/:hashtag" element={<HashtagPage />} />
             </Routes>
           </TokenContext.Provider>

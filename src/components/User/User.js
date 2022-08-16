@@ -1,3 +1,4 @@
+import { useParams } from 'react-router-dom';
 import styled from "styled-components";
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
@@ -7,19 +8,27 @@ import Hashtag from "../Hashtag/Hashtag.js";
 import Post from "../Post/Post.js";
 import { Link, useNavigate } from "react-router-dom";
 import ReactTooltip from 'react-tooltip';
-import jooj from "./jooj.png";
+
 import PostInsert from "../PostInsert.js";
 import reqRoot from "../../utils/reqRoot.js";
 import generateHeader from "../../utils/TokenHeaders.js";
 import UserContext from "../../contexts/UserContext.js";
 
-export default function Timeline(props) {
-    const {id,setId} =props
+export default function User(props){
+    const {id}= useParams();
+    const {id2,setId} =props
+    console.log(id)
     const [posts, setPosts] = useState(null);
+    const [use, setUser] = useState(null);
     const [error, setError] = useState(null);
     const [trending, setTrending] = useState([]);
     const { user } = useContext(UserContext);
     const config = generateHeader(user);
+    useEffect(() => {
+        const promise = axios.get(`${reqRoot}/user/${id}`);
+        promise.then((res) => setUser(res.data));
+        promise.catch((err) => setError(err));
+    }, []);
 
     useEffect(() => {
         const promise = axios.get(`${reqRoot}/posts`, config);
@@ -35,9 +44,11 @@ export default function Timeline(props) {
             console.log('getTrendingHashtags: ' + err);
         }
     }, []);
-
-    return (
-        <Container>
+   
+    return(
+        <>
+            <p>{id}</p>
+            <Container>
             <Background />
           
 
@@ -61,9 +72,9 @@ export default function Timeline(props) {
             <Body>
                 <PostsContainer>
                     <TimelineTextContainer>
-                        timeline
+                        {use}
                     </TimelineTextContainer>
-                    <PostInsert />
+                    
                     {posts === null && error === null ? <h1>Loading...</h1> :
                     posts === null && error !== null ? <h1>An error occured while trying to fetch the posts, please refresh the page</h1> :
                     posts.length === 0 ? <h1>There are no posts yet</h1> :
@@ -73,9 +84,9 @@ export default function Timeline(props) {
             <Header setId={setId}/>
         </Container>
 
+        </>
     )
 }
-
 const Background = styled.div`
     width: 100%;
     height: 100%;

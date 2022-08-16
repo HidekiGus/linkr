@@ -1,6 +1,6 @@
 import styled from "styled-components";
 export default function Div(pros){
-    const {nome,img,fechar} =pros
+    const {nome,img,id,fechar} =pros
     let img2=img
     if(img==''){
         img2 ="https://i.ytimg.com/vi/RTFJsGtJEtY/maxresdefault.jpg"
@@ -8,9 +8,10 @@ export default function Div(pros){
     
     return(
         <>
-            <Box onClick={fechar}>
+            <Box onClick={()=> fechar(id)}>
            <Img src={img2}></Img>
             <div>{nome}</div>
+           
             </Box>
            
         </>
