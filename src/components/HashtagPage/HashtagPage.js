@@ -11,7 +11,8 @@ import reqRoot from '../../utils/reqRoot';
 import UserContext from '../../contexts/UserContext.js';
 import generateHeader from '../../utils/TokenHeaders.js';
 
-export default function HashtagPage() {
+export default function HashtagPage(props) {
+    const {id2,setId} =props
     const [posts, setPosts] = useState(null);
     const [error, setError] = useState(null);
     const [trending, setTrending] = useState([]);
@@ -37,7 +38,7 @@ export default function HashtagPage() {
     return (
         <>
             <Container>
-                <Header />
+               
 
                 {/*<button data-tip={texto} >Curtidas</button>*/}
                 <Linkr>
@@ -67,6 +68,7 @@ export default function HashtagPage() {
                         posts.map((post, index) => <Post post={post} key={index} action={() => window.open(post.userPostLink)} />)}
                     </PostsContainer>
                 </Body>
+                <Header setId={setId}/>
             </Container>
         </>
     )

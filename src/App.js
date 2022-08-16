@@ -31,7 +31,7 @@ export default function App() {
               <Route path="/signup" element={<SignUp />} />
               <Route path="/timeline" element={<Timeline setId={setId} id={id}/>} />
               <Route path="/user/:id" element={<User setId={setId} id={id}/>} />
-              <Route path="/hashtag/:hashtag" element={<HashtagPage />} />
+              <Route path="/hashtag/:hashtag" element={<HashtagPage  setId={setId} id={id}/>} />
             </Routes>
           </TokenContext.Provider>
         </UserContext.Provider>
