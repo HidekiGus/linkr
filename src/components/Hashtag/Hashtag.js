@@ -1,10 +1,15 @@
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 export default function Hashtag(props){
-    const {nome} =props
-    
+    const navigate = useNavigate();
+    const {nome,id} =props
+    function pagina(){
+        navigate('/hashtag/'+nome);
+    }
+  
     return(
         <>
-            <Box>
+            <Box onClick={pagina}>
           
             <div><p>#{nome}</p></div>
             </Box>

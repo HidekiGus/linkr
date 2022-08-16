@@ -8,7 +8,9 @@ import { IoIosArrowUp } from 'react-icons/io';
 import UserContext from "../../contexts/UserContext";
 import reqRoot from "../../utils/reqRoot.js";
 
-export default function Header() {
+export default function Header(props) {
+    const navigate = useNavigate();
+    const{setId}= props
     const [hidden, setHidden] = useState(true);
     const [pesq,setPesq]=useState('')
     const [chave,setChave]=useState('pesquisa')
@@ -26,7 +28,7 @@ export default function Header() {
             return
         }
         setChave('pesquisa2')
-       
+      
      
         try{
             const resposta=await axios.get(`${reqRoot}/timeline/?nome=${pesq}`,{
@@ -43,8 +45,10 @@ export default function Header() {
        }
     
     }
-    function fechar(){
+    function fechar(id){
+        setId(id)
         setChave('pesquisa')
+        navigate('/user/'+id);
     }
     
 
@@ -70,7 +74,7 @@ export default function Header() {
             {res.map((ns)=>{
             return(
                 <>
-                   <Div nome={ns.name} img={ns.image} fechar={fechar}> </Div>
+                   <Div nome={ns.name} img={ns.image} id={ns.id} fechar={fechar}> </Div>
                 </>
                 )
             })}
