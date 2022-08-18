@@ -13,7 +13,7 @@ import reqRoot from "../../utils/reqRoot.js";
 import generateHeader from "../../utils/TokenHeaders.js";
 import UserContext from "../../contexts/UserContext.js";
 
-
+export default function Timeline(props) {
     const {id,setId} =props
     const [posts, setPosts] = useState(null);
     const [error, setError] = useState(null);
