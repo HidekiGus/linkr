@@ -46,9 +46,10 @@ export default function Header(props) {
     
     }
     function fechar(id){
-        setId(id)
-        setChave('pesquisa')
+        setId(id);
+        setChave('pesquisa');
         navigate('/user/'+id);
+        window.location.reload(); 
     }
     
 
